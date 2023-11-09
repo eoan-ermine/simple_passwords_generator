@@ -9,19 +9,6 @@ public:
   PassGen() : r_device(), gen(r_device()) {}
 
   std::string generate(std::string_view ident) {
-    static const auto gen = [](char from, char to) {
-      std::vector<char> res;
-      for (char c = from; c != to; ++c)
-        res.push_back(c);
-      return res;
-    };
-
-    static const std::vector uppers = gen('A', 'Z');
-    static const std::vector lowers = gen('a', 'z');
-    static const std::vector digits = gen('0', '9');
-    static const std::vector symbols = {'!', '"',  '#', '$', '%',
-                                        '&', '\'', '(', ')', '*'};
-
     std::string res;
     res.push_back(getRandomFromSet(uppers));
     res.push_back(getRandomFromSet(uppers));
@@ -33,6 +20,19 @@ public:
   }
 
 private:
+  static std::vector<char> genSetFromRange(char from, char to) {
+    std::vector<char> res;
+    for (char c = from; c != to; ++c)
+      res.push_back(c);
+    return res;
+  }
+
+  const std::vector<char> uppers = genSetFromRange('A', 'Z');
+  const std::vector<char> lowers = genSetFromRange('a', 'z');
+  const std::vector<char> digits = genSetFromRange('0', '9');
+  const std::vector<char> symbols = {'!', '"',  '#', '$', '%',
+                                     '&', '\'', '(', ')', '*'};
+
   char getRandomFromSet(const std::vector<char> &set) {
     std::uniform_int_distribution<int> dist(0, set.size() - 1);
     return set[dist(gen)];
