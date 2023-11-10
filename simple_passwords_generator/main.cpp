@@ -1,8 +1,8 @@
 #include <iostream>
 #include <random>
+#include <span>
 #include <string>
 #include <string_view>
-#include <vector>
 
 class PassGen {
 public:
@@ -33,7 +33,7 @@ private:
   const std::vector<char> symbols = {'!', '"',  '#', '$', '%',
                                      '&', '\'', '(', ')', '*'};
 
-  char getRandomFromSet(const std::vector<char> &set) {
+  char getRandomFromSet(std::span<const char> set) {
     std::uniform_int_distribution<int> dist(0, set.size() - 1);
     return set[dist(gen)];
   }
